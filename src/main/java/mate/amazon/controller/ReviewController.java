@@ -10,9 +10,10 @@ import mate.amazon.utils.CustomCsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @RestController
-public class InitController {
+public class ReviewController {
     @Autowired
     private AmazonRepository amazonRepository;
 
@@ -32,9 +33,12 @@ public class InitController {
     @PostConstruct
     public void inject() {
         try {
-            List<AmazonReviewEntity> reviews = customCsvParser.parseCsvFile("Reviews.csv");
+            long startReading = System.currentTimeMillis();
+            List<AmazonReviewEntity> reviews = customCsvParser.readCsvFile("Reviews.csv");
+            LOGGER.info((System.currentTimeMillis() - startReading) * 0.001);
             long startSaving = System.currentTimeMillis();
             amazonRepository.saveAll(reviews);
+            LOGGER.info((System.currentTimeMillis() - startSaving) * 0.001);
         } catch (IOException e) {
             throw new RuntimeException("Can`t read file", e);
         }

@@ -18,12 +18,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomCsvParser {
 
-    public List<AmazonReviewEntity> parseCsvFile(String fileName) throws IOException {
+    public List<AmazonReviewEntity> readCsvFile(String fileName) throws IOException {
         Resource resource = new ClassPathResource(fileName);
         File csvFile = resource.getFile();
         InputStreamReader input = new InputStreamReader(new FileInputStream(csvFile));
         CSVParser csvParser = null;
         csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(input);
+        return parseCsvFile(csvParser);
+    }
+
+    public List<AmazonReviewEntity> parseCsvFile (CSVParser csvParser) {
         List<AmazonReviewEntity> reviews = new ArrayList<>();
         for (CSVRecord record : csvParser) {
             AmazonReviewEntity review = new AmazonReviewEntity();
