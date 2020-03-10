@@ -22,12 +22,12 @@ public class CustomCsvParser {
         Resource resource = new ClassPathResource(fileName);
         File csvFile = resource.getFile();
         InputStreamReader input = new InputStreamReader(new FileInputStream(csvFile));
-        CSVParser csvParser = null;
-        csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(input);
-        return parseCsvFile(csvParser);
+        return parseCsvFile(input);
     }
 
-    public List<AmazonReviewEntity> parseCsvFile (CSVParser csvParser) {
+    public List<AmazonReviewEntity> parseCsvFile (InputStreamReader inputStreamReader) throws IOException {
+        CSVParser csvParser = null;
+        csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
         List<AmazonReviewEntity> reviews = new ArrayList<>();
         for (CSVRecord record : csvParser) {
             AmazonReviewEntity review = new AmazonReviewEntity();
