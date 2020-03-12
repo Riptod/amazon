@@ -1,3 +1,7 @@
-.idea/*
+HELP.md
+target/
+.idea
+.mvn
+.test
 *.iml
-target/*
+src/main/resources/Reviews.csv
