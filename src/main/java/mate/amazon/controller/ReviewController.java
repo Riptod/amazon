@@ -6,19 +6,24 @@ import javax.annotation.PostConstruct;
 
 import mate.amazon.entity.AmazonReviewEntity;
 import mate.amazon.repository.AmazonRepository;
+import mate.amazon.service.FindMostFrequentWordFromComments;
 import mate.amazon.utils.CustomCsvParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @RestController
 public class ReviewController {
-    @Autowired
-    private AmazonRepository amazonRepository;
+    private final AmazonRepository amazonRepository;
+    private final CustomCsvParser customCsvParser;
+    private final FindMostFrequentWordFromComments findMostFrequentWordFromComments;
 
-    @Autowired
-    private CustomCsvParser customCsvParser;
+    public ReviewController(AmazonRepository amazonRepository, CustomCsvParser customCsvParser,
+                            FindMostFrequentWordFromComments findMostFrequentWordFromComments) {
+        this.amazonRepository = amazonRepository;
+        this.customCsvParser = customCsvParser;
+        this.findMostFrequentWordFromComments = findMostFrequentWordFromComments;
+    }
 
     @GetMapping("/users")
     public List<String> getMostActiveUsers() {
@@ -28,6 +33,12 @@ public class ReviewController {
     @GetMapping("/mostComments")
     public List<String> getMostCommentedGoods() {
         return amazonRepository.findMostCommentedGoods(1000);
+    }
+
+    @GetMapping("/popularWords")
+    public List<String> getPopularWords() {
+        return findMostFrequentWordFromComments.countWordsInString(
+                amazonRepository.getAllComments());
     }
 
     @PostConstruct

@@ -15,4 +15,7 @@ public interface AmazonRepository extends JpaRepository<AmazonReviewEntity, Long
     @Query(value = "SELECT product_id FROM REVIEWS group by product_id "
             + "order by count(product_id) desc limit ?1", nativeQuery = true)
     List<String> findMostCommentedGoods(Integer count);
+
+    @Query(value = "SELECT new java.lang.String(text) from AmazonReviewEntity ")
+    List<String> getAllComments();
 }
