@@ -18,7 +18,8 @@ public class ReviewServiceImpl implements ReviewService {
     private AmazonRepository amazonRepository;
 
     @Override
-    public List<String> countWordsInString(List<String> comments) {
+    public List<String> findMostUsedWords(Integer count) {
+        List<String> comments = amazonRepository.getAllComments();
         Map<String, Integer> countWords = new HashMap<String, Integer>();
         for (String c : comments) {
             String[] words = c.toLowerCase()
@@ -35,7 +36,7 @@ public class ReviewServiceImpl implements ReviewService {
         return countWords.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
-                .limit(1000)
+                .limit(count)
                 .collect(Collectors.toList());
     }
 

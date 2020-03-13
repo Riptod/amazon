@@ -32,7 +32,7 @@ public class ReviewController {
 
     @GetMapping("/popularWords")
     public List<String> getPopularWords() {
-        return reviewService.countWordsInString(reviewService.getAllComments());
+        return reviewService.findMostUsedWords(1000);
     }
 
     @PostConstruct

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ReviewService {
-    List<String> countWordsInString(List<String> comments);
+    List<String> findMostUsedWords(Integer count);
 
     List<String> findActiveUsers(Integer count);
 
