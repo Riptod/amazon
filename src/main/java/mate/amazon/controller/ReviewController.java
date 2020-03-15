@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import mate.amazon.entity.AmazonReviewEntity;
-import mate.amazon.repository.AmazonRepository;
+import mate.amazon.service.ReviewService;
 import mate.amazon.utils.CustomCsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,20 +14,25 @@ import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @RestController
 public class ReviewController {
-    @Autowired
-    private AmazonRepository amazonRepository;
 
+    @Autowired
+    private ReviewService reviewService;
     @Autowired
     private CustomCsvParser customCsvParser;
 
     @GetMapping("/users")
     public List<String> getMostActiveUsers() {
-        return amazonRepository.findActiveUsers(1000);
+        return reviewService.findActiveUsers(1000);
     }
 
     @GetMapping("/mostComments")
     public List<String> getMostCommentedGoods() {
-        return amazonRepository.findMostCommentedGoods(1000);
+        return reviewService.findMostCommentedGoods(1000);
+    }
+
+    @GetMapping("/popularWords")
+    public List<String> getPopularWords() {
+        return reviewService.findMostUsedWords(1000);
     }
 
     @PostConstruct
@@ -37,7 +42,7 @@ public class ReviewController {
             List<AmazonReviewEntity> reviews = customCsvParser.readCsvFile("Reviews.csv");
             LOGGER.info((System.currentTimeMillis() - startReading) * 0.001);
             long startSaving = System.currentTimeMillis();
-            amazonRepository.saveAll(reviews);
+            reviewService.saveAll(reviews);
             LOGGER.info((System.currentTimeMillis() - startSaving) * 0.001);
         } catch (IOException e) {
             throw new RuntimeException("Can`t read file", e);

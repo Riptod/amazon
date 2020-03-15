@@ -25,7 +25,8 @@ public class CustomCsvParser {
         return parseCsvFile(input);
     }
 
-    public List<AmazonReviewEntity> parseCsvFile (InputStreamReader inputStreamReader) throws IOException {
+    public List<AmazonReviewEntity> parseCsvFile(InputStreamReader inputStreamReader)
+            throws IOException {
         CSVParser csvParser = null;
         csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
         List<AmazonReviewEntity> reviews = new ArrayList<>();
