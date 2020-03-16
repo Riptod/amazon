@@ -1,7 +1,6 @@
 package mate.amazon.service;
 
 import java.util.List;
-
 import mate.amazon.entity.AmazonReviewEntity;
 import org.springframework.stereotype.Service;
 

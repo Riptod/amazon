@@ -3,17 +3,18 @@ package mate.amazon.controller;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
-
 import mate.amazon.entity.AmazonReviewEntity;
 import mate.amazon.service.ReviewService;
 import mate.amazon.utils.CustomCsvParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 @RestController
 public class ReviewController {
+    private static final Logger LOGGER = LogManager.getLogger(ReviewController.class);
 
     @Autowired
     private ReviewService reviewService;
